@@ -6,8 +6,8 @@ on the attacker side
 on the victimes side
  sudo ./venv/bin/python2.7 server/pytbull-server.py  
 
- for the stress test 
+for the stress test 
 to record 
 sudo tcpdump -i enp3s0 -w capturefile.pcap
  to replay 
-  sudo tcpreplay --mbps 1000 -l 1000 -i enp2s0 capturefile.pcap 
+ sudo tcpreplay --mbps 1000 -l 1000 -i enp2s0 capturefile.pcap 

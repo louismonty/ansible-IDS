@@ -14,8 +14,10 @@
     - snort 
     - suricata
     - pulledpork
+    - tools
   tags:
     - pulledpork
     - pytbully
     - snort 
     - suricata
+    - tools

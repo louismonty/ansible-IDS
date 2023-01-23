@@ -1,0 +1,13 @@
+The commands used for the test are 
+
+for the pytbull test:
+on the attacker side
+ sudo ./venv/bin/python2.7 pytbull -t 192.168.0.109
+on the victimes side
+ sudo ./venv/bin/python2.7 server/pytbull-server.py  
+
+ for the stress test 
+to record 
+sudo tcpdump -i enp3s0 -w capturefile.pcap
+ to replay 
+  sudo tcpreplay --mbps 1000 -l 1000 -i enp2s0 capturefile.pcap 

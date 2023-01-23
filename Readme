@@ -8,6 +8,6 @@ on the victimes side
 
 for the stress test 
 to record 
-sudo tcpdump -i enp3s0 -w capturefile.pcap
- to replay 
+ sudo tcpdump -i enp3s0 -w capturefile.pcap
+to replay 
  sudo tcpreplay --mbps 1000 -l 1000 -i enp2s0 capturefile.pcap 

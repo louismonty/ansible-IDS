@@ -1,0 +1,7 @@
+ossec_dir: /var/ossec
+ossec_install_type: local
+ossec_email: n
+ossec_email_address: n
+ossec_integritycheck_daemon: y
+ossec_rootkit_engine: y
+ossec_active_response: n

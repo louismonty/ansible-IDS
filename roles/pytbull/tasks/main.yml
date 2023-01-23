@@ -1,0 +1,64 @@
+---
+
+- name: (OSSEC) Check if OSSEC is already installed
+  stat:
+    path: /home/louis/pytbull-2.1
+  register: pytbull
+
+- name: copy pytbull
+  copy:
+    src: pytbull-2.1
+    dest: /home/louis/
+    directory_mode: yes
+    owner: louis
+    group: louis
+    mode: 0766
+  when: not pytbull.stat.exists
+
+
+
+- name: Install virtualenv
+  pip:
+    name: virtualenv
+    virtualenv: /home/louis/pytbull-2.1/venv
+    virtualenv_python: python2.7
+
+- name: Install virtualenv requirements
+  pip:
+    name: " {{ item }} "
+    virtualenv: /home/louis/pytbull-2.1/venv
+    virtualenv_python: python2.7
+  loop:
+    - scapy
+    - feedparser
+    - cherrypy
+
+
+- name: install ftp yum
+  yum:
+    name: " {{item}} "
+    state: present
+  loop:
+    - vsftpd
+    - openssh-server
+    - httpd 
+    - nmap
+    - hping3
+    - tcpreplay
+    - ncrack
+  when: ansible_os_family == "RedHat"
+
+- name: install ftp apt
+  apt:
+    name: " {{item}} "
+    state: present
+  loop:
+    - vsftpd
+    - openssh-server
+    - apache2
+    - nmap
+    - hping3
+    - tcpreplay
+    - ncrack
+  when: ansible_os_family == "Debian"
+

@@ -1,0 +1,56 @@
+---
+
+- name: install Ossec requirements
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - gcc
+  - make
+  - inotify-tools
+  - bind-utils
+
+# from https://github.com/astsu777/ansible-role-ossec/blob/master/tasks/ossec.yml
+- name: (OSSEC) Retrieve latest version of OSSEC from GitHub
+  git:
+    repo: https://github.com/ossec/ossec-hids.git
+    dest: /opt/ossec-hids
+    update: yes
+
+# from https://github.com/astsu777/ansible-role-ossec/blob/master/tasks/ossec.yml
+- name: (OSSEC) Check if OSSEC is already installed
+  stat:
+    path: "{{ ossec_dir }}"
+  register: ossec
+
+# from https://github.com/astsu777/ansible-role-ossec/blob/master/tasks/ossec.yml
+- name: (OSSEC) Install OSSEC-HIDS in local mode
+  expect:
+    command: "/bin/bash  /opt/ossec-hids/install.sh"
+    timeout: 300
+    responses:
+      en/br: "en"
+      Press ENTER: ""
+      What kind of installation do you want: "{{ ossec_install_type }}"
+      Choose where to install the OSSEC HIDS: "{{ ossec_dir }}"
+      Do you want e-mail notification: "{{ ossec_email }}"
+      Do you want to run the integrity check daemon: "{{ ossec_integritycheck_daemon }}"
+      Do you want to run the rootkit detection engine: "{{ ossec_rootkit_engine }}"
+      Do you want to enable active response: "{{ ossec_active_response }}"
+  become: yes
+  when: not ossec.stat.exists
+
+# from https://github.com/astsu777/ansible-role-ossec/blob/master/tasks/ossec.yml
+- name: (OSSEC) Update OSSEC-HIDS
+  expect:
+    command: "/bin/bash /opt/ossec-hids/install.sh"
+    responses:
+      en/br: "en"
+      Press ENTER: ""
+      Do you want to update it: "y"
+      Do you want to update the rules: "y"
+  become: yes
+  when: ossec.stat.exists
+
+- name: (OSSEC) Start OSSEC service
+  ansible.builtin.shell: /var/ossec/bin/ossec-control restart

@@ -1,0 +1,29 @@
+---
+
+- name: wget pulledpork from 
+  ansible.builtin.get_url:
+    url: https://github.com/shirkdog/pulledpork/archive/master.tar.gz
+    dest: /tmp/pulledpork.tar.gz
+    mode: 0755
+
+
+- name: untar pulledpork
+  ansible.builtin.unarchive:
+    src: /tmp/pulledpork.tar.gz
+    dest: /usr/local/bin/
+    remote_src: yes
+
+
+- name: create pulledpork directory
+  ansible.builtin.file:
+    path: /etc/snort/
+    state: directory
+
+- name: copy pulledpork.conf
+  ansible.builtin.copy:
+    src: pulledpork.conf
+    dest: /etc/snort/pulledpork.conf
+    owner: root
+    group: root
+    mode: 0644
+  

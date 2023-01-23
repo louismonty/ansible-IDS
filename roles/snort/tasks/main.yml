@@ -1,0 +1,13 @@
+---
+- name: install snort
+  ansible.builtin.package:
+    name: snort
+    state: present
+
+- name: change interface 
+  lineinfile:
+    path: /etc/snort/snort.debian.conf
+    regexp: 'DEBIAN_SNORT_INTERFACE='
+    line: 'DEBIAN_SNORT_INTERFACE="{{ outgoing_ethernet_interface }}"'
+    state: present
+

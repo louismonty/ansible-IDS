@@ -1,0 +1,50 @@
+---
+
+- name: install persistent iptables
+  apt:
+    name: iptables-persistent
+    state: present
+  when:
+    - ansible_distribution == "Ubuntu"
+
+- name: install persistent iptables
+  dnf:
+    name: iptables-persistent
+    state: present
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+
+# - name: masqurade traffic going out on outgoing interface
+#   iptables:
+#     chain: POSTROUTING
+#     jump: MASQUERADE
+#     out_interface: "{{ outgoing_ethernet_interface }}"
+#     table: nat
+#     state: present
+#   when:
+#     - "{{router}}"
+
+- name: ufw drop incoming
+  ufw:
+    default: deny
+    direction: incoming
+    state: enabled
+
+- name: allow incoming ssh
+  ufw:
+    rule: allow
+    port: 22
+    proto: tcp
+
+- name: allow incoming http
+  ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+- name: allow incoming https
+  ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+

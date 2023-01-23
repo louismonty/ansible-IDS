@@ -1,0 +1,19 @@
+---
+- name: Add Suricata APT repository
+  apt_repository:
+    repo: 'ppa:oisf/suricata-stable'
+    state: present
+
+
+- name: Install required packages
+  package: 
+    name: suricata
+    state: latest
+
+
+- name: adding interface to suricata
+  lineinfile:
+    path: /etc/suricata/suricata.yaml
+    regexp: "HOME_NET: "
+    line: 'HOME_NET: "[192.168.0.0/24]"'
+    state: present

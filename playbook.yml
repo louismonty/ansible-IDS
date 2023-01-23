@@ -1,0 +1,21 @@
+---
+- hosts: host
+  become: yes
+  roles:
+    - Ossec
+    - pytbull  
+  tags:
+    - Ossec
+    - pytbull  
+- hosts: server
+  become: yes
+  roles: 
+    - pytbull
+    - snort 
+    - suricata
+    - pulledpork
+  tags:
+    - pulledpork
+    - pytbully
+    - snort 
+    - suricata

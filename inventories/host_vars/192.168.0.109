@@ -1,0 +1,3 @@
+---
+incoming_ethernet_interface: enp2s0
+outgoing_ethernet_interface: enp3s0
